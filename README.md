@@ -1,4 +1,4 @@
-# n-ide.nvim
+# NIDE (Neovim Integrated Development Environment)
 
 > UNDER CONSTRUCTION
 
