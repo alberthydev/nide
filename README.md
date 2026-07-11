@@ -1,5 +1,7 @@
 # n-ide.nvim
 
+> UNDER CONSTRUCTION
+
 This is my Neovim configuration for using it as an IDE. It’s forked from kickstart.nvim. Feel free to use it however you like, but I strongly recommend checking out the kickstart.nvim repository to build your own setup, it’s very easy to get started and understand.
 
 ## Installation
