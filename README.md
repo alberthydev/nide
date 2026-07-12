@@ -57,7 +57,7 @@ Depois, garanta que `~/.cargo/bin` está no seu `PATH`.
 ## Instalação
 
 ```sh
-git clone https://github.com/<seu-usuario>/NIDE.git ~/.config/nvim
+git clone https://github.com/alberthydev/nide.git ~/.config/nvim
 nvim
 ```
 
