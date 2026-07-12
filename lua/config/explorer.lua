@@ -13,6 +13,8 @@ require("fzf-lua").setup({
   },
 })
 
+require("fzf-lua").register_ui_select()
+
 local map = vim.keymap.set
 local fzf = function()
   return require("fzf-lua")
