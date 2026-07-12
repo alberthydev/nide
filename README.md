@@ -1,83 +1,82 @@
 # NIDE (Neovim Integrated Development Environment)
 
-> UNDER CONSTRUCTION
+Configuração de Neovim construída do zero, sem plugin manager externo, tudo gerenciado pelo `vim.pack`, o gerenciador de plugins nativo introduzido no Neovim 0.12.
 
-This is my Neovim configuration for using it as an IDE. It’s forked from kickstart.nvim. Feel free to use it however you like, but I strongly recommend checking out the kickstart.nvim repository to build your own setup, it’s very easy to get started and understand.
+LSP completa com Mason, Treesitter, debugger (DAP) e navegação de arquivos minimalista. Sinta-se à vontade pra usar como quiser, mas se o objetivo é aprender a montar a sua própria do zero, recomendo fortemente construir a sua também, é mais trabalhoso, mas você entende (e consegue consertar) cada peça.
 
-## Installation
+## Requisitos
 
-### Install Neovim
+Precisa do **Neovim 0.12 ou mais recente** (é a versão mínima que tem `vim.pack`). Muitos gerenciadores de pacote das distros ainda distribuem versões antigas — confira com `nvim --version` antes de seguir. 
 
-This was built to be used on an Arch-based distro or WSL. I have no intention of porting it to other operating systems. If you are using a different environment, I highly recommend checking out the kickstart.nvim repository, they support Windows, macOS, and other Linux distributions.
-(It will probably work on any popular modern distro as long as you meet the requirements listed below.)
+Além do Neovim em si:
+- `git` - usado pelo `vim.pack` pra clonar plugins
+- Compilador C (`gcc`/`clang`) - pro Treesitter compilar os parsers
+- `tree-sitter` CLI (>= 0.25) - mais confiável instalar via Cargo (veja abaixo)
+- `node` - pro debug adapter de JS/TS
+- `fzf` - busca fuzzy de arquivos
+- `unzip` e `curl` - usados pelo Mason pra baixar ferramentas
 
-### Install External Dependencies
+### Debian / Ubuntu
 
-External Requirements:
-- Basic utils: `git`, `make`, `unzip`, C Compiler (`gcc`)
-- [ripgrep](https://github.com/BurntSushi/ripgrep#installation),
-  [fd-find](https://github.com/sharkdp/fd#installation)
-- Clipboard tool (xclip/xsel/win32yank or other depending on the platform)
-- A [Nerd Font](https://www.nerdfonts.com/): optional, this can be turned off easily 
-- Language Setup:
-  - If you want to write Typescript, you need `npm`
-  - If you want to write Golang, you will need `go`
-  - etc.
-
-#### Arch Requeriments
-
-```
-sudo pacman -S --noconfirm --needed gcc make git ripgrep fd unzip neovim
-```
-
-#### Windows Subsystem for Linux (WSL)
-  
-```
-wsl --install
-wsl
-sudo add-apt-repository ppa:neovim-ppa/unstable -y
+```sh
 sudo apt update
-sudo apt install make gcc ripgrep unzip git xclip neovim
+sudo apt install -y git build-essential unzip curl nodejs npm fzf
 ```
 
-### Install Kickstart
-
-> [!NOTE]
-> [Backup](#FAQ) your previous configuration (if any exists)
-
-#### Clone n-ide.nvim
+### Fedora
 
 ```sh
-git clone https://github.com/alberthydev/n-ide.nvim.git "${XDG_CONFIG_HOME:-$HOME/.config}"/nvim
+sudo dnf install -y git gcc make unzip curl nodejs npm fzf
 ```
-### Post Installation
 
-Start Neovim
+### Arch
 
 ```sh
+sudo pacman -S --needed git base-devel unzip curl nodejs npm fzf
+```
+
+### WSL (Windows Subsystem for Linux)
+
+Use uma distro Ubuntu/Debian dentro do WSL e siga os comandos da seção **Debian / Ubuntu** acima. Depois, instale um utilitário de clipboard pra integrar com o Windows:
+
+```sh
+sudo apt install -y wl-clipboard
+```
+
+### tree-sitter CLI (todas as distros)
+
+O gerenciador de pacotes de cada distro costuma ter uma versão desatualizada. O caminho mais confiável é via Cargo:
+
+```sh
+curl --proto '=https' --tlsv1.2 -sSf https://sh.rustup.rs | sh
+cargo install tree-sitter-cli
+```
+
+Depois, garanta que `~/.cargo/bin` está no seu `PATH`.
+
+## Instalação
+
+```sh
+git clone https://github.com/<seu-usuario>/NIDE.git ~/.config/nvim
 nvim
 ```
 
-That's it! Lazy will install all the plugins you have. Use `:Lazy` to view
-the current plugin status. Hit `q` to close the window.
+Na primeira abertura, `vim.pack.add` clona todos os plugins automaticamente — pode levar alguns segundos. Depois disso, um arquivo `nvim-pack-lock.json` vai aparecer na raiz da config; faça commit dele junto com o resto, é o que garante que outra máquina instale exatamente as mesmas versões.
 
-### FAQ
+## Estrutura
 
-* What should I do if I already have a pre-existing Neovim configuration?
-  * You should back it up and then delete all associated files.
-  * This includes your existing init.lua and the Neovim files in `~/.local`
-    which can be deleted with `rm -rf ~/.local/share/nvim/`
-* Can I keep my existing configuration in parallel to kickstart?
-  * Yes! You can use [NVIM_APPNAME](https://neovim.io/doc/user/starting.html#%24NVIM_APPNAME)`=nvim-NAME`
-    to maintain multiple configurations. For example, you can install the kickstart
-    configuration in `~/.config/nvim-kickstart` and create an alias:
-    ```
-    alias nvim-kickstart='NVIM_APPNAME="nvim-kickstart" nvim'
-    ```
-    When you run Neovim using `nvim-kickstart` alias it will use the alternative
-    config directory and the matching local directory
-    `~/.local/share/nvim-kickstart`. You can apply this approach to any Neovim
-    distribution that you would like to try out.
-* What if I want to "uninstall" this configuration:
-  * See [lazy.nvim uninstall](https://lazy.folke.io/usage#-uninstalling) information
-
+```
+nvim-dotfiles/
+├── init.lua                  -- só orquestra os módulos abaixo, nessa ordem
+└── lua/config/
+    ├── options.lua            -- opções nativas do editor
+    ├── keymaps.lua            -- atalhos gerais + navegação de janelas/abas
+    ├── plugins.lua            -- toda a lista de vim.pack.add
+    ├── colorscheme.lua        -- tema catppuccin
+    ├── treesitter.lua         -- parsers + highlight/indent/fold
+    ├── lsp.lua                -- Mason + LSP nativo + code actions
+    ├── dap.lua                -- debugger (nvim-dap) + adapter JS/TS
+    ├── explorer.lua           -- netrw (árvore) + fzf-lua (busca fuzzy)
+    ├── git.lua                -- gitsigns (hunks, blame)
+    └── statusline.lua         -- lualine
+```
