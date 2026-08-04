@@ -61,7 +61,7 @@ git clone https://github.com/alberthydev/nide.git ~/.config/nvim
 nvim
 ```
 
-Na primeira abertura, `vim.pack.add` clona todos os plugins automaticamente — pode levar alguns segundos. Depois disso, um arquivo `nvim-pack-lock.json` vai aparecer na raiz da config; faça commit dele junto com o resto, é o que garante que outra máquina instale exatamente as mesmas versões.
+Na primeira abertura, `vim.pack.add` clona todos os plugins automaticamente, pode levar alguns segundos. Depois disso, um arquivo `nvim-pack-lock.json` vai aparecer na raiz da config; faça commit dele junto com o resto, é o que garante que outra máquina instale exatamente as mesmas versões.
 
 ## Estrutura
 
