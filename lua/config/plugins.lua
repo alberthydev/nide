@@ -12,5 +12,6 @@ vim.pack.add({
   "https://github.com/lewis6991/gitsigns.nvim",
   "https://github.com/nvim-lualine/lualine.nvim",
   "https://github.com/windwp/nvim-autopairs.git",
-  "https://github.com/yorickpeterse/vim-paper"
+  "https://github.com/yorickpeterse/vim-paper",
+  "https://github.com/JafarDakhan/vim-gml"
 })

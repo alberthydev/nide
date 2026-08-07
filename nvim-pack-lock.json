@@ -101,6 +101,10 @@
       "rev": "cdc07ac78467a233fd62c493de29a17e0cf2b2b6",
       "src": "https://github.com/folke/tokyonight.nvim"
     },
+    "vim-gml": {
+      "rev": "382f7aecf6da88c077f34df2f863e750b4d0fdd3",
+      "src": "https://github.com/JafarDakhan/vim-gml"
+    },
     "vim-paper": {
       "rev": "d8decc44569aec6247bae54d971e658bb8108399",
       "src": "https://github.com/yorickpeterse/vim-paper"
